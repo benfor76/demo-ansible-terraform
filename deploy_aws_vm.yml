@@ -1,0 +1,32 @@
+---
+- name: Execute Terraform Deployment via AAP
+  hosts: localhost
+  gather_facts: false
+  vars:
+    # Default fallback values (Best practice: override these via AAP Survey)
+    aws_region: "us-east-1"
+    vpc_name: "my-demo-vpc"
+    subnet_name: "my-demo-public-subnet"
+    security_group_name: "my-demo-sg"
+    key_name: "my-existing-aws-key"
+    instance_type: "t3.micro"
+    tf_project_path: "{{ playbook_dir }}/terraform"
+
+  tasks:
+    - name: Run Terraform Init and Apply
+      hashicorp.terraform.terraform:
+        project_path: "{{ tf_project_path }}"
+        state: present
+        force_init: true
+        variables:
+          aws_region: "{{ aws_region }}"
+          vpc_name: "{{ vpc_name }}"
+          subnet_name: "{{ subnet_name }}"
+          security_group_name: "{{ security_group_name }}"
+          key_name: "{{ key_name }}"
+          instance_type: "{{ instance_type }}"
+      register: terraform_output
+
+    - name: Debug Terraform Outputs
+      ansible.builtin.debug:
+        msg: "The provisioned RHEL VM Public IP is: {{ terraform_output.outputs.instance_public_ip.value }}"
