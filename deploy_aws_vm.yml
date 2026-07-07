@@ -39,6 +39,11 @@
           instance_type: "{{ instance_type }}"
       register: terraform_output
 
+#Display the output into the Ansible output for the job
+    - name: DEBUG - Print all available Terraform outputs
+      ansible.builtin.debug:
+        var: terraform_output.outputs
+
     - name: Display Elastic IP Infrastructure Details
       ansible.builtin.debug:
         msg: 
