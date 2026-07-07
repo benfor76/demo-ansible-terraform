@@ -14,7 +14,7 @@
 
   tasks:
     - name: Run Terraform Init and Apply
-      hashicorp.terraform.terraform:
+      cloud.terraform.terraform:
         project_path: "{{ tf_project_path }}"
         state: present
         force_init: true
