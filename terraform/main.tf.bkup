@@ -11,48 +11,31 @@ provider "aws" {
   region = var.aws_region
 }
 
-#------------------New block to replace 1-3--------------
-# 1. Dynamic VPC Discovery (Handles ID or Name Tag)
+# 1. Discover existing VPC by Name Tag
 data "aws_vpc" "selected" {
-  id = startswith(var.vpc_name, "vpc-") ? var.vpc_name : null
-
-  dynamic "filter" {
-    for_each = startswith(var.vpc_name, "vpc-") ? [] : [1]
-    content {
-      name   = "tag:Name"
-      values = [var.vpc_name]
-    }
+  filter {
+    name   = "tag:Name"
+    values = [var.vpc_name]
   }
 }
 
-# 2. Dynamic Subnet Discovery (Handles ID or Name Tag)
+# 2. Discover existing Subnet within that VPC by Name Tag
 data "aws_subnet" "selected" {
-  id     = startswith(var.subnet_name, "subnet-") ? var.subnet_name : null
-  vpc_id = data.aws_vpc.selected.id
-
-  dynamic "filter" {
-    for_each = startswith(var.subnet_name, "subnet-") ? [] : [1]
-    content {
-      name   = "tag:Name"
-      values = [var.subnet_name]
-    }
+  filter {
+    name   = "tag:Name"
+    values = [var.subnet_name]
   }
+  vpc_id = data.aws_vpc.selected.id
 }
 
-# 3. Dynamic Security Group Discovery (Handles ID or Group Name)
+# 3. Discover existing Security Group by Name within that VPC
 data "aws_security_group" "selected" {
-  id     = startswith(var.security_group_name, "sg-") ? var.security_group_name : null
-  vpc_id = data.aws_vpc.selected.id
-
-  dynamic "filter" {
-    for_each = startswith(var.security_group_name, "sg-") ? [] : [1]
-    content {
-      name   = "group-name"
-      values = [var.security_group_name]
-    }
+  filter {
+    name   = "group-name"
+    values = [var.security_group_name]
   }
+  vpc_id = data.aws_vpc.selected.id
 }
-#--------------------------------------------------------
 
 # 4. Discover the latest official RHEL 9 AMI
 data "aws_ami" "rhel9" {
