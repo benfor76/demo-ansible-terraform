@@ -85,8 +85,24 @@ resource "aws_instance" "rhel_vm" {
   }
 }
 
+# 6. Allocate and associate an Elastic IP (EIP) to the instance
+resource "aws_eip" "rhel_eip" {
+  instance = aws_instance.rhel_vm.id
+  domain   = "vpc"
+
+  tags = {
+    Name        = "AAP-Provisioned-RHEL-EIP"
+    ManagedBy   = "Ansible-and-Terraform"
+  }
+}
+
 # Output the IP for Ansible visibility
 output "instance_public_ip" {
   value       = aws_instance.rhel_vm.public_ip
   description = "The public IP address of the new RHEL VM"
+}
+
+output "instance_public_dns" {
+  value       = aws_eip.rhel_eip.public_dns
+  description = "The AWS-provided public IPv4 DNS name assigned to the EIP"
 }
