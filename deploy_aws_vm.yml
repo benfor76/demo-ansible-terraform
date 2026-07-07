@@ -5,10 +5,10 @@
   vars:
     # Default fallback values (Best practice: override these via AAP Survey)
     aws_region: "us-east-1"
-    vpc_name: "Bens-Lab-AAP26-vpc"
-    subnet_name: "Bens-Lab-AAP26"
-    security_group_name: "ben-lab-sg"
-    key_name: "ben-lab-key-pair"
+    vpc_name: ""vpc-01f0d3e0669024ffd"
+    subnet_name: "subnet-0fb7fc99427ad3efb"
+    security_group_name: "sg-086080d0a5fb14422"
+    key_name: "key-0a3d663bed7df87ba"
     instance_type: "t3.micro"
     tf_project_path: "{{ playbook_dir }}/terraform"
 
