@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     # Default fallback values (Best practice: override these via AAP Survey)
-    aws_region: "us-east-1"
+    aws_region: "us-east-2"
     vpc_name: "vpc-01f0d3e0669024ffd"
     subnet_name: "subnet-0fb7fc99427ad3efb"
     security_group_name: "sg-086080d0a5fb14422"
