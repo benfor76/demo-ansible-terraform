@@ -48,5 +48,4 @@
       ansible.builtin.debug:
         msg: 
           - "SUCCESS: RHEL VM Provisioned with Elastic IP!"
-          - "Elastic IP Address: {{ terraform_output.outputs.instance_elastic_ip.value }}"
           - "AWS Public DNS: {{ terraform_output.outputs.instance_public_dns.value }}"
